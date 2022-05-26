@@ -3,6 +3,8 @@ import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 
+from api.chat.models import Message
+
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
@@ -22,20 +24,27 @@ class ChatConsumer(WebsocketConsumer):
             self.channel_name
         )
 
-    def receive(self, text_data):
+    def receive(self, text_data=None, bytes_data=None):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+        channel = text_data_json['channel']
 
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': message
+                'message': message,
+                'channel': channel
             }
         )
 
     def chat_message(self, event):
         message = event['message']
+        channel = event['channel']
+        self.create_messages(channel=channel, message=message)
         self.send(text_data=json.dumps({
             'message': message
         }))
+
+    def create_messages(self, channel, message):
+        Message.objects.create(channel=channel, message=message)
