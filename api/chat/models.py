@@ -5,6 +5,6 @@ from django.db import models
 
 # Create your models here.
 class Message(models.Model):
-    author = models.ForeignKey(User, related_name='messages', on_delete=models.CASCADE, null=True)
-    context = models.TextField()
+    channel = models.CharField(max_length=511, null=True)
+    message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
