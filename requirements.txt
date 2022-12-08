@@ -6,3 +6,5 @@ python-decouple==3.3
 django-silk==4.1.0
 psycopg2-binary==2.8.6
 django-cors-headers==3.5.0
+channels==3.0.1
+channels-redis==4.0.0
