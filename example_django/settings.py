@@ -36,13 +36,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rest_framework',
     'drf_yasg',
-    'social_core',
+    'api',
     'api.chat',
     'api.user',
+    'api.room',
+    'api.message',
     'channels'
 ]
+
 ASGI_APPLICATION = 'example_django.routing.application'
+AUTH_USER_MODEL = "user.AccountUser"
 
 CHANNEL_LAYERS = {
     'default': {
@@ -68,8 +73,7 @@ ROOT_URLCONF = 'example_django.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,6 +141,7 @@ STATICFILES_DIRS = (
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'api.core.custom_exception_handler.custom_exception_handler',
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
     ),

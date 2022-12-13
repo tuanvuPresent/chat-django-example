@@ -31,6 +31,7 @@ schema_view = get_schema_view(
         contact=openapi.Contact(email="contact@snippets.local"),
         license=openapi.License(name="BSD License"),
     ),
+    url='https://8000-tuanvuprese-chatdjangoe-y8m4hs93hc3.ws-us78.gitpod.io',
     public=True,
 )
 urlpatterns = [
@@ -40,5 +41,5 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path("", include('api.chat.urls')),
-    path("", include('api.user.urls')),
+    path("api/", include('api.urls')),
 ]
