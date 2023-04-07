@@ -28,7 +28,10 @@ class TokenAuthMiddleWare:
         except ValueError:
             token = None
 
-        token_generator = JwtTokenGenerator()
-        payload = token_generator.verify_token(token)
-        scope["user"] = await get_user(token_generator.user_id)
+        try:
+            token_generator = JwtTokenGenerator()
+            token_generator.verify_token(token)
+            scope["user"] = await get_user(token_generator.user_id)
+        except Exception:
+            scope["user"] = None
         return await self.app(scope, receive, send)
