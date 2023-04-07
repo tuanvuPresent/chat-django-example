@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 from decouple import config
-
+import datetime
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -43,14 +43,14 @@ INSTALLED_APPS = [
 
     'apps',
     'apps.chat',
-    'apps.user',
+    'apps.authentication',
     'apps.rooms',
     'apps.message',
     'channels'
 ]
 
 ASGI_APPLICATION = 'config.routing.application'
-AUTH_USER_MODEL = "user.AccountUser"
+AUTH_USER_MODEL = "authentication.AccountUser"
 
 CORS_ALLOWED_ORIGINS = ['http://localhost']
 # CORS_ALLOW_ALL_ORIGINS = True
@@ -181,7 +181,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+        'apps.authentication.jwt_auth.JWTAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 50,
@@ -197,3 +197,21 @@ if config('CACHES_URL'):
             }
         }
     }
+
+
+# JWT SETTINGS
+JWT_AUTH = {
+    'JWT_SECRET_KEY': SECRET_KEY,
+    'JWT_GET_USER_SECRET_KEY': None,
+    'JWT_ALGORITHM': 'HS256',
+    'JWT_VERIFY': True,
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_LEEWAY': 0,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+    'JWT_AUDIENCE': None,
+    'JWT_ISSUER': None,
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+    'JWT_AUTH_COOKIE': 'JWT',
+}

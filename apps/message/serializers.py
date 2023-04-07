@@ -1,7 +1,8 @@
 from rest_framework import serializers
-from apps.user.models import AccountUser
 from apps.message.models import Message
+from django.contrib.auth import get_user_model
 
+AccountUser = get_user_model()
 
 class AccountUserSerializer(serializers.ModelSerializer):
     class Meta:
