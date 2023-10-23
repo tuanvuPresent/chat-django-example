@@ -21,7 +21,7 @@ class MessageModelViewSet(BaseModelViewSet):
         serializer.is_valid(raise_exception=True)
 
         message = serializer.validated_data.get('message')
-        room = serializer.validated_data.get('message')
+        room = serializer.validated_data.get('room')
         self._send_message_ws(message=message, channel=room)
 
         self.perform_create(serializer)
